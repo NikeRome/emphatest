@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations</title>
+</head>
+
+<body>
+    <h2>My Reservations</h2>
+    <ul>
+        {% for reservation in reservations %}
+        <li>
+            Room Number: {{ reservation.room.number }}<br>
+            Check-in Date: {{ reservation.check_in_date }}<br>
+            Check-out Date: {{ reservation.check_out_date }}<br>
+            <form method="post" action="{% url 'user-profile' %}">
+                {% csrf_token %}
+                <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                <button type="submit">Cancel Reservation</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>No reservations found.</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

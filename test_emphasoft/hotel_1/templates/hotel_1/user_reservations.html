@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations</title>
+</head>
+
+<body>
+    <h2>My Reservations</h2>
+    <ul>
+        {% for reservation in reservations %}
+        <li>
+            Room Number: {{ reservation.room.number }}<br>
+            Check-in Date: {{ reservation.check_in_date }}<br>
+            Check-out Date: {{ reservation.check_out_date }}<br>
+            <button onclick="cancelReservation({{ reservation.id }})">Cancel Reservation</button>
+        </li>
+        {% empty %}
+        <li>No reservations found.</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function cancelReservation(reservationId) {
+            if (confirm("Are you sure you want to cancel this reservation?")) {
+                fetch(`/reservations/${reservationId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload(); // Обновляем страницу после успешной отмены бронирования
+                    } else {
+                        alert("Failed to cancel reservation.");
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("An error occurred while canceling the reservation.");
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

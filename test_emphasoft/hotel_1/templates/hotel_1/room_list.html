@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Rooms</title>
+</head>
+
+<body>
+    <h2>Available Rooms</h2>
+
+    <form method="get">
+        <label for="min_price">Min Price:</label>
+        <input type="number" name="min_price" id="min_price">
+        <label for="max_price">Max Price:</label>
+        <input type="number" name="max_price" id="max_price">
+        <label for="min_capacity">Min Capacity:</label>
+        <input type="number" name="min_capacity" id="min_capacity">
+        <label for="sort_by">Sort By:</label>
+        <select name="sort_by" id="sort_by">
+            <option value="asc">Price: Low to High</option>
+            <option value="desc">Price: High to Low</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <ul>
+        {% for room in rooms %}
+            <li>
+                Room Number: {{ room.number }}<br>
+                Price per Night: {{ room.price_per_night }}<br>
+                Capacity: {{ room.capacity }}<br>
+            </li>
+        {% empty %}
+            <li>No available rooms found.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'reservation-create' %}">Book a Room</a>
+</body>
+
+</html>
